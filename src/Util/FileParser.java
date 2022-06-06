@@ -10,24 +10,27 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
+import Structure.Fila;
+import Structure.Lista;
+import Structure.Pilha;
 
 public class FileParser {
     private final BufferedReader br;
-    private final Stack<String> stack = new Stack<>();
+    private final Pilha<String> stack = new Pilha<>();
 
     public FileParser(String filePath) throws FileNotFoundException {
         br = new BufferedReader(new FileReader(filePath));
         List<String> lines = new ArrayList<>(br.lines().toList());
         Collections.reverse(lines);
-        stack.addAll(lines);
+
+        for (String line : lines) {
+            stack.push(line);
+        }
     }
 
-    private List<Estado> getEstados() {
-        List<Estado> estados = new ArrayList<>();
+    private Lista<Estado> getEstados() {
+        Lista<Estado> estados = new Lista<>();
 
         if (stack.peek().startsWith("Estados da maquina")) {
             stack.pop();
@@ -52,13 +55,13 @@ public class FileParser {
         throw new RuntimeException("O arquivo não está no formato adequado.");
     }
 
-    private void linkFuncoesDeTransicaoToEstados(List<Estado> estados) {
+    private void linkFuncoesDeTransicaoToEstados(Lista<Estado> estados) {
         if (stack.peek().startsWith("Funcoes de transicao")) {
             stack.pop();
 
             String row = stack.pop();
             while (row != null && !row.equals("")) {
-                Queue<Character> characters = stringToQueue(row);
+                Fila<Character> characters = stringToQueue(row);
 
                 StringBuilder estadoOrigem = new StringBuilder();
                 while(characters.peek() != '(') {
@@ -93,7 +96,9 @@ public class FileParser {
                 funcaoDeTransicao.setSaida(saida);
                 funcaoDeTransicao.setMovimentoDoCabecote(movimentoDoCabecote);
 
-                for (Estado estado : estados) {
+                for (int i = 0; i < estados.size(); i++) {
+                    Estado estado = estados.get(i);
+
                     if (estado.getNome().equals(estadoDestino.toString())) {
                         funcaoDeTransicao.setDestino(estado);
                     }
@@ -114,20 +119,20 @@ public class FileParser {
         }
     }
 
-    private Queue<Character> stringToQueue(String string) {
-        Queue<Character> queue = new LinkedList<>();
+    private Fila<Character> stringToQueue(String string) {
+        Fila<Character> fila = new Fila<>();
 
         for (char c : string.toCharArray()) {
-            queue.add(c);
+            fila.add(c);
         }
 
-        return queue;
+        return fila;
     }
 
     public Maquina getMaquina() throws IOException {
         Maquina maquina = new Maquina();
 
-        List<Estado> estados = getEstados();
+        Lista<Estado> estados = getEstados();
 
         maquina.setEstados(estados);
         linkFuncoesDeTransicaoToEstados(estados);

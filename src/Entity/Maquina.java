@@ -1,13 +1,11 @@
 package Entity;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
 
+import Structure.Lista;
 import Structure.ListaDupla;
 
 public class Maquina {
     private ListaDupla<Character> fita;
-    private List<Estado> estados;
+    private Lista<Estado> estados;
     private int cabeçote = 1;
     
     public ListaDupla<Character> getFita() {
@@ -18,11 +16,11 @@ public class Maquina {
         this.fita = fita;
     }
     
-    public List<Estado> getEstados() {
+    public Lista<Estado> getEstados() {
         return estados;
     }
     
-    public void setEstados(List<Estado> estados) {
+    public void setEstados(Lista<Estado> estados) {
         this.estados = estados;
     }
     
@@ -48,13 +46,15 @@ public class Maquina {
     }
 
     private Estado getEstadoInicial() {
-        Optional<Estado> opt = estados.stream().filter(Estado::isInicial).findFirst();
+        for (int i = 0; i < estados.size(); i++) {
+            Estado estado = estados.get(i);
 
-        if (opt.isEmpty()) {
-            throw new RuntimeException("Não existe estado inicial");
+            if (estado.isInicial()) {
+                return estado;
+            }
         }
 
-        return opt.get();
+        throw new RuntimeException("Não existe estado inicial");
     }
 
     public boolean assess(String string) {

@@ -1,11 +1,10 @@
 package Entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import Structure.Lista;
 
 public class Estado {
     private final String nome;
-    private List<FuncaoDeTransicao> funcoesDeTransicao = new ArrayList<>();
+    private Lista<FuncaoDeTransicao> funcoesDeTransicao = new Lista<>();
     private boolean inicial = false;
     private boolean aceitacao = false;
 
@@ -26,7 +25,7 @@ public class Estado {
         return nome;
     }
 
-    public List<FuncaoDeTransicao> getFuncoesDeTransicao() {
+    public Lista<FuncaoDeTransicao> getFuncoesDeTransicao() {
         return funcoesDeTransicao;
     }
 
