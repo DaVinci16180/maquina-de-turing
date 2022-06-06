@@ -1,18 +1,18 @@
 Estados da maquina (nome,inicial,final):
-q0,1,0
-q1,0,0
-q2,0,0
-q3,0,0
-q4,0,1
+0,1,0
+1,0,0
+2,0,0
+3,0,0
+4,0,1
 
 Funcoes de transicao (estado origem(entrada:saida;direcao)->estado destino):
-q0(a:X;D)->q1
-q0(Y:Y;D)->q3
-q1(a:a;D)->q1
-q1(Y:Y;D)->q1
-q1(b:Y;E)->q2
-q2(Y:Y;E)->q2
-q2(a:a;E)->q2
-q2(X:X;D)->q0
-q3(Y:Y;D)->q3
-q3(B:B;E)->q4
+0(a:X;D)->q1
+0(Y:Y;D)->q3
+1(a:a;D)->q1
+1(Y:Y;D)->q1
+1(b:Y;E)->q2
+2(Y:Y;E)->q2
+2(a:a;E)->q2
+2(X:X;D)->q0
+3(Y:Y;D)->q3
+3(B:B;E)->q4
