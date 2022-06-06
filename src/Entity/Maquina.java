@@ -57,18 +57,30 @@ public class Maquina {
         throw new RuntimeException("Não existe estado inicial");
     }
 
-    public boolean assess(String string) {
+    public void assess(String string) {
         preencherFita(string);
 
         try {
+            System.out.println("\n==========");
+            System.out.println("  Passos");
+            System.out.println("==========\n");
+
             printFita();
-            return doAssessments(getEstadoInicial());
+            boolean aceita = doAssessments(getEstadoInicial());
+
+            System.out.println("\n================");
+            System.out.println("   Relatorio");
+            System.out.println("================\n");
+
+            System.out.println("Estado final da fita:");
+            printFita();
+
+            System.out.println("A computação " + (aceita ? "finalizou" : "não finalizou") + " em um estado de aceitação.");
         } catch (Exception e) {
-            return false;
         }
     }
 
-    private void printFita() {
+    public void printFita() {
         for (int i = 0; i < fita.size() + 2; i++) {
             System.out.print('-');
         }
@@ -113,7 +125,7 @@ public class Maquina {
     private Estado transicao(FuncaoDeTransicao funcao) {
         fita.replace(cabeçote, funcao.getSaida());
 
-        if (fita.size() == cabeçote && !fita.get(cabeçote).equals('B')) {
+        if (fita.size() - 1 == cabeçote && !fita.get(cabeçote).equals('B')) {
             fita.add('B');
         } else if (cabeçote == 0 && !fita.get(cabeçote).equals('B')) {
             fita.addAt('B', 0);
@@ -136,7 +148,7 @@ public class Maquina {
                 throw new RuntimeException("Movimento do cabeçote não reconhecido.");
         }
 
-        if (cabeçote > fita.size()) {
+        if (cabeçote > fita.size() - 1) {
             fita.add('B');
         } else if (cabeçote < 0) {
             fita.addAt('B', 0);
