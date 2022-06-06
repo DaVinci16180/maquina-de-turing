@@ -48,8 +48,8 @@ public class FileParser {
 
                 row = stack.pop();
             }
-            Sorting sorting = new Sorting();
-            estados = sorting.bubbleSort(estados);
+
+            estados = Sorting.bubbleSort(estados);
 
             return estados;
         }
